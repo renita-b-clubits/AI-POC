@@ -1,0 +1,24 @@
+html,
+body,
+#root {
+  /* font-size: 1rem; */
+  font-size: 0.935rem;
+  font-family: poppins;
+}
+
+@media print {
+  body {
+    visibility: hidden;
+  }
+  #section-to-print {
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+}
+
+
+
+@import "bootstrap/scss/bootstrap";

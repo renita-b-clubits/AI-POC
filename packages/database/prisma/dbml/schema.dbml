@@ -1,0 +1,249 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table DemoEmployee {
+  id Int [pk, increment]
+  first_name String
+  last_name String
+  base_office_location String
+  middle_name String
+  salutation String
+  gender String
+  group_date_of_joining String
+  date_of_birth String
+  date_of_birth_access String
+  candidate_id String
+  date_of_resignation String
+  date_of_confirmation String
+  date_of_exit String
+  date_of_reactivation String
+  date_of_activation String
+  date_of_joining String
+  created_by String
+  department String
+  department_code String
+  department_name String
+  departments_hierarchy String
+  departments_hierarchy_with_codes String
+  designation String
+  designation_code String
+  designation_effective_from String
+  designation_name String
+  direct_manager_position_id String
+  direct_manager String
+  direct_manager_effective_from String
+  direct_manager_employee_id String
+  direct_manager_email String
+  direct_manager_name String
+  do_not_hire String
+  do_not_hire_comment String
+  employee_added_date String
+  employee_currency String
+  employee_id String [unique, not null]
+  employee_separation_comments String
+  employee_separation_reason String
+  employee_status String
+  sub_employee_type String
+  employee_type String
+  employee_type_effective_from String
+  grade String
+  hod String
+  group_hr_head String
+  hod_employee_id String
+  hrbp_employee_id String
+  hrbp_name String
+  imported_date_of_confirmation String
+  is_on_notice_period String
+  notice_period_assigned String
+  mobile_access String
+  old_employee_id_rehired String
+  performance_designation_and_department String
+  performance_manager String
+  permission_role String
+  position_id String
+  probation_period String
+  reactivated_by String
+  reactivated_reason String
+  rehire_by String
+  rehire_on String
+  rehire_reason String
+  separation_transaction_date String
+  separation_requested_last_date String
+  separation_agreed_last_date String
+  tenure String
+  termination_comment String
+  total_ctc String
+  time_zone String
+  total_ctc_in_base_currency String
+  total_work_experience_from_gdoj String
+  total_experience String
+  variable_pay String
+  variable_pay_in_base_currency String
+  variable_pay_with_name String
+  blood_group String
+  citizenship_status String
+  city_type String
+  center_type String
+  anniversary_date String
+  introduction_or_bio String
+  full_name String
+  ethnicity String
+  marital_status String
+  location_type String
+  location_area String
+  marriage_anniversary_access String
+  military_status String
+  nationality String
+  office_address String
+  office_area String
+  office_city String
+  office_country String
+  office_location String
+  office_location_cost_center String
+  office_location_cost_center_id String
+  work_area_code String
+  user_unique_id String
+  position_lwd String
+  self_service String
+  religion String
+  personal_cpr_number_bahrain String
+  phone_country_code String
+  primary_mobile_number String
+  office_state String
+  office_region String
+  current_address String
+  current_address_line_1 String
+  current_pin_code String
+  current_city String
+  current_country String
+  current_landmark String
+  current_state String
+  current_street String
+  emergency_address String
+  emergency_address_line_1 String
+  emergency_city String
+  emergency_country String
+  emergency_landmark String
+  emergency_pin_code String
+  emergency_state String
+  emergency_street String
+  extension_mobile_no String
+  office_mobile_access String
+  personal String
+  permanent_address String
+  permanent_address_line_1 String
+  permanent_pin_code String
+  permanent_city String
+  permanent_country String
+  permanent_landmark String
+  permanent_state String
+  permanent_street String
+  personal_email_id String
+  personal_email_id_access String
+  personal_mobile_access String
+  personal_mobile_no String
+  office_mobile_no String
+  aadhaar_number String
+  emirates_id String
+  iqama_number String
+  is_emirates_card_uploaded String
+  international_bank_account_number_iban String
+  is_iqama_number_uploaded String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Gender {
+  id Int [pk, increment]
+  name String [unique, not null]
+  patients DemoPatient [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table DemoPatient {
+  id Int [pk, increment]
+  firstName String [not null]
+  middleName String
+  lastName String [not null]
+  dateOfBirth DateTime [not null]
+  contactNumber String [not null]
+  address String [not null]
+  city String [not null]
+  state String [not null]
+  country String [not null]
+  remarks String
+  genderId Int [not null]
+  gender Gender [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Data {
+  id Int [pk, increment]
+  callDate DateTime [not null]
+  callType String [not null]
+  source String [not null]
+  destination String [not null]
+  duration Int [not null]
+  talktime Int [not null]
+  disposition String [not null]
+  audio String [not null]
+  batchTranscriptionBaseUrl String
+}
+
+Table Role {
+  id Int [pk, increment]
+  name String [unique, not null]
+  users User [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table UserStatus {
+  id Int [pk, increment]
+  name String [unique, not null]
+  users User [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table User {
+  id Int [pk, increment]
+  username String [unique, not null]
+  password String [not null]
+  name String [not null]
+  mobile String
+  email String
+  otp String
+  expiryTime DateTime
+  twoFactor Boolean [not null, default: false]
+  roleId Int [not null]
+  role Role [not null]
+  statusId Int
+  status UserStatus
+  usersCreated User [not null]
+  usersUpdated User [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  createdById Int
+  updatedById Int
+  createdBy User
+  updatedBy User
+
+  indexes {
+    (username, mobile) [unique]
+    (username, email) [unique]
+  }
+}
+
+Ref: DemoPatient.genderId > Gender.id
+
+Ref: User.roleId > Role.id
+
+Ref: User.statusId > UserStatus.id
+
+Ref: User.createdById > User.id
+
+Ref: User.updatedById > User.id
