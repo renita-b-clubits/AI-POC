@@ -17,7 +17,7 @@ export const otp = publicProcedure
   .mutation(async ({ ctx, input }) => {
     try {
       let token: string | undefined = undefined; // Initialize to undefined
-
+      console.log("userrrrrr otpp");
       const user = await prisma.user.findFirstOrThrow({
         select: {
           id: true,
@@ -39,6 +39,7 @@ export const otp = publicProcedure
           username: input.username,
         },
       });
+      console.log("rennn", user);
 
       console.log("enter the if condition");
 

@@ -4,6 +4,8 @@ import { z } from "zod";
 import { prisma } from "../../../db/prisma";
 import { RouterOutput } from "../../router";
 import { publicProcedure } from "../../trpc";
+// import { SNSClient } from "@aws-sdk/client-sns";
+// import { PublishCommand } from "@aws-sdk/client-sns";
 
 export type User = RouterOutput["user"]["signIn"]["user"];
 
@@ -49,7 +51,7 @@ export const signInWithMobile = publicProcedure
         },
         where: { mobile: input.username },
       });
-      console.log("user", user);
+      console.log("user-otp", user);
       if (!user) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
@@ -69,10 +71,11 @@ export const signInWithMobile = publicProcedure
         },
       });
 
+      console.log("Update Results :", updateResult);
+
       if (!updateResult) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
-      //Step 3: send OTP to user using AWS mobile sms
 
       // Step 4: Retrieve User from Database
       const user_details = await prisma.user.findFirstOrThrow({
@@ -88,14 +91,31 @@ export const signInWithMobile = publicProcedure
           },
           email: true,
           mobile: true,
-          otp: false,
-          expiryTime: false,
-          twoFactor: false,
+          otp: true,
+          expiryTime: true,
+          twoFactor: true,
         },
         where: { mobile: input.username },
       });
 
-      console.log(user);
+      console.log("userDetails:", user_details);
+      //sending msg through AWS
+      // const snsClient = new SNSClient({
+      //   region: "us-east-1",
+      //   credentials: {
+      //     accessKeyId: "AKIAQEG3VIRR57XYNI46",
+      //     secretAccessKey: "CVGEqwvae47Un2wyd+sfwvxxkV5p0CnrXtQClexQ",
+      //   },
+      // });
+
+      // const params = {
+      //   Message: `Welcome! your mobile verification code is: ${otp}`,
+      //   PhoneNumber: user.mobile ?? undefined,
+      // };
+
+      // const result = await snsClient.send(new PublishCommand(params));
+
+      // console.log("result is: ", result);
 
       return { user_details };
     } catch (error) {
