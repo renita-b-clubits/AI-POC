@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.485.0",
     "@aws-sdk/client-sns": "^3.485.0",
     "@azure/communication-email": "^1.0.0",
     "@fastify/autoload": "^5.0.0",
