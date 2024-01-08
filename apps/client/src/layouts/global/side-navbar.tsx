@@ -94,6 +94,30 @@ export const SideNavbar = () => {
           )}
         </RouterNavLink>
 
+        <RouterNavLink to="/ocr" className="text-decoration-none">
+          {({ isActive }) => (
+            <Link
+              className="text-decoration-none text-center"
+              style={getActiveStyles({ isActive })}
+            >
+              <div
+                className="vstack align-items-center justify-content-center gap-2"
+                style={{
+                  minWidth: "4.5rem",
+                  minHeight: "4.5rem",
+                  marginLeft: isActive ? "-0.25rem" : "",
+                }}
+              >
+                <FontAwesomeIcon icon={faPrint} fontSize="1.25rem" />
+
+                <p className="mb-0" style={{ marginTop: "-0.25rem" }}>
+                  OCR
+                </p>
+              </div>
+            </Link>
+          )}
+        </RouterNavLink>
+
         <RouterNavLink to="/chat-bot" className="text-decoration-none">
           {({ isActive }) => (
             <Link

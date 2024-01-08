@@ -8,6 +8,7 @@ import LazyProtectedComputerVisionPageWithFallback from "./lazy/protected/comput
 import LazyProtectedDocumentExtractionPageWithFallback from "./lazy/protected/document-extraction";
 import LazyProtectedLanguagePageWithFallback from "./lazy/protected/language";
 import LazyProtectedVoicePageWithFallback from "./lazy/protected/voice";
+import LazyProtectedOCRPageWithFallback from "./lazy/protected/ocr";
 import LazyLoginOtpPageWithFallback from "./lazy/login-otp";
 
 export const router = createBrowserRouter([
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
       {
         path: "anomaly-detection",
         element: <LazyProtectedAnomalyDetectionPageWithFallback />,
+      },
+      {
+        path: "ocr",
+        element: <LazyProtectedOCRPageWithFallback />,
       },
       {
         path: "chat-bot",
