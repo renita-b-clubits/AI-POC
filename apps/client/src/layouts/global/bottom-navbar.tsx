@@ -2,7 +2,7 @@ import { faSearch, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Navbar,
-  NavbarBrand,
+  // NavbarBrand,
   NavItem,
   Collapse,
   NavLink,
@@ -20,11 +20,11 @@ export const BottomNavbar = () => {
       sticky="bottom"
       container="fluid"
       className="border-top p-0"
-      style={{ maxHeight: "2rem" }}
+      // style={{ maxHeight: "2rem" }}
     >
-      <NavbarBrand>
+      {/* <NavbarBrand>
         <h5 className="text-primary">g</h5>
-      </NavbarBrand>
+      </NavbarBrand> */}
 
       <Collapse isOpen={isOpen} navbar>
         <Nav className="ms-auto align-items-center" navbar>
