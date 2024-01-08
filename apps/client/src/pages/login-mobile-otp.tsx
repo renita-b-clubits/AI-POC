@@ -85,22 +85,40 @@ export const LoginPage = () => {
 
   const navigate = useNavigate();
 
+  const sendOtpHandler = async (data: LoginValidationSchema) => {
+    // 1. initial send - aws sms
+    if (ResendBtn == "send otp") {
+      const { user_details }: any = await client.user.signInWithMobile.mutate({
+        username: data.username ?? "",
+      });
+      console.log("user_details", user_details);
+      if (user_details) {
+        setCountdown(90);
+        setOtpSent({
+          status: true,
+          username: user_details.username,
+        });
+      }
+    } else {
+      // 1. resend - send twilio sms
+      const { user_details }: any = await client.user.signInWithTwilio.mutate({
+        username: data.username ?? "",
+      });
+      console.log("user_details", user_details);
+      if (user_details) {
+        setCountdown(90);
+        setOtpSent({
+          status: true,
+          username: user_details.username,
+        });
+      }
+    }
+  };
+
   const onSubmit: SubmitHandler<LoginValidationSchema> = async (data) => {
     try {
       if (!otpSent.status) {
-        const { user_details }: any = await client.user.signInWithMobile.mutate(
-          {
-            username: data.username ?? "",
-          }
-        );
-        console.log("user_details", user_details);
-        if (user_details) {
-          setCountdown(90);
-          setOtpSent({
-            status: true,
-            username: user_details.username,
-          });
-        }
+        await sendOtpHandler(data);
       } else {
         const { user, token } = await client.user.otp.mutate({
           username: otpSent.username,
