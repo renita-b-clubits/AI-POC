@@ -50,7 +50,6 @@ export const signInWithTwilio = publicProcedure
           },
           where: { mobile: input.username },
         });
-
         if (!user) {
           throw new TRPCError({ code: "UNAUTHORIZED" });
         }
@@ -93,7 +92,7 @@ export const signInWithTwilio = publicProcedure
         // Send OTP using Twilio
         const twilioClient = twilio(
           "AC2acf0939c1a79acd7cb48572c28223b7",
-          "a94d3548eeb23a4169afbfc9805993b7"
+          "14aba7136006699e93df9f8e59b34a7a"
         );
         const mobileNumber = user.mobile ?? undefined; // Nullish coalescing operator to handle null case
 
@@ -109,7 +108,6 @@ export const signInWithTwilio = publicProcedure
             message: "User's mobile number is null or undefined.",
           });
         }
-
         return { user_details };
       } else {
         throw new TRPCError({

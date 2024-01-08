@@ -113,13 +113,17 @@ const main = async (): Promise<void> => {
         )
       );
 
-      const generateAdminBySystem = (name: string): UserOptionalDefaults => {
+      const generateAdminBySystem = (
+        name: string,
+        mobile: string | null = null,
+        email: string | null = null
+      ): UserOptionalDefaults => {
         return {
           name,
           password: hashSalt(name.toLowerCase()),
           username: name.toLowerCase(),
-          mobile: null,
-          email: null,
+          mobile,
+          email,
           expiryTime: null,
           otp: null,
           twoFactor: false,
@@ -131,16 +135,22 @@ const main = async (): Promise<void> => {
       };
 
       const [{ id: balajiUserId }] = await Promise.all(
-        [generateAdminBySystem("Balaji"), generateAdminBySystem("Sathish")].map(
-          (user) =>
-            tx.user.upsert({
-              create: user,
-              update: user,
-              where: {
-                username: user.username,
-              },
-              select: { ...defaultSelect },
-            })
+        [
+          generateAdminBySystem(
+            "Balaji",
+            "+919940485941",
+            "balaji.d@clubitssolutions.com"
+          ),
+          generateAdminBySystem("Sathish"),
+        ].map((user) =>
+          tx.user.upsert({
+            create: user,
+            update: user,
+            where: {
+              username: user.username,
+            },
+            select: { ...defaultSelect },
+          })
         )
       );
 
@@ -204,7 +214,7 @@ const main = async (): Promise<void> => {
           ),
           generateEmployeeBySuperAdmin(
             "Ranjitha",
-            "8608243165",
+            "+918608243165",
             "ranjitha.r@clubitssolutions.com"
           ),
           generateEmployeeBySuperAdmin("Daniel"),
