@@ -4,8 +4,8 @@ import { z } from "zod";
 import { prisma } from "../../../db/prisma";
 import { RouterOutput } from "../../router";
 import { publicProcedure } from "../../trpc";
-import { SNSClient } from "@aws-sdk/client-sns";
-import { PublishCommand } from "@aws-sdk/client-sns";
+// import { SNSClient } from "@aws-sdk/client-sns";
+// import { PublishCommand } from "@aws-sdk/client-sns";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 export type User = RouterOutput["user"]["signIn"]["user"];
@@ -105,22 +105,22 @@ export const signInWithMobile = publicProcedure
 
         console.log("userDetails:", user_details);
         //sending msg through AWS
-        const snsClient = new SNSClient({
-          region: "us-east-1",
-          credentials: {
-            accessKeyId: "AKIAQEG3VIRR57XYNI46",
-            secretAccessKey: "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",
-          },
-        });
+        // const snsClient = new SNSClient({
+        //   region: "us-east-1",
+        //   credentials: {
+        //     accessKeyId: "AKIAQEG3VIRR57XYNI46",
+        //     secretAccessKey: "CVGEqwvae47Un2wyd+sfwvxxkV5p0CnrXtQClexQ",
+        //   },
+        // });
 
-        const params = {
-          Message: `Welcome! your mobile verification code is: ${otp}`,
-          PhoneNumber: user.mobile ?? undefined,
-        };
+        // const params = {
+        //   Message: `Welcome! your mobile verification code is: ${otp}`,
+        //   PhoneNumber: user.mobile ?? undefined,
+        // };
 
-        const result = await snsClient.send(new PublishCommand(params));
+        // const result = await snsClient.send(new PublishCommand(params));
 
-        console.log("result is: ", result);
+        // console.log("result is: ", result);
 
         return { user_details };
       } else if (emailPattern.test(input.username)) {
@@ -221,6 +221,7 @@ export const signInWithMobile = publicProcedure
         return { user_details };
       }
     } catch (error) {
+      console.log("in catch block", JSON.stringify(error));
       throw new TRPCError({
         code: "UNAUTHORIZED",
         message: JSON.stringify(error),

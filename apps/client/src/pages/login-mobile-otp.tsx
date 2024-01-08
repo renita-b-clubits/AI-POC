@@ -23,7 +23,7 @@ import { toast } from "react-toastify";
 
 import { client, setToken } from "../main";
 
-import React from "react";
+import React, { useState } from "react";
 
 // import { gapi } from "gapi-script";
 
@@ -35,6 +35,39 @@ export const LoginPage = () => {
     status: false,
     username: "",
   });
+
+  const [countdown, setCountdown] = useState(0);
+  const [ResendBtn, setResendBtn] = useState("send otp");
+  console.log(ResendBtn);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (countdown > 0) {
+      const new_count = countdown - 1;
+      timer = setInterval(() => {
+        setCountdown(new_count);
+        if (new_count === 0) {
+          setResendBtn("Resend otp");
+          setOtpSent({
+            status: false,
+            username: "",
+          });
+        }
+      }, 1000);
+    }
+    return () => {
+      clearInterval(timer);
+    };
+  }, [countdown]);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${
+      remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds
+    }`;
+  };
 
   const loginValidationSchema = z
     .object({
@@ -55,11 +88,14 @@ export const LoginPage = () => {
   const onSubmit: SubmitHandler<LoginValidationSchema> = async (data) => {
     try {
       if (!otpSent.status) {
-        const { user_details } = await client.user.signInWithMobile.mutate({
-          username: data.username ?? "",
-        });
+        const { user_details }: any = await client.user.signInWithMobile.mutate(
+          {
+            username: data.username ?? "",
+          }
+        );
         console.log("user_details", user_details);
         if (user_details) {
+          setCountdown(90);
           setOtpSent({
             status: true,
             username: user_details.username,
@@ -169,10 +205,18 @@ export const LoginPage = () => {
                     />
                   </Stack>
 
-                  <Stack spacing={1}>
+                  <Stack
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    spacing={3}
+                  >
                     <Button type="submit" variant="contained" fullWidth>
-                      Proceed
+                      {!otpSent.status ? ResendBtn : "Verify OTP"}
                     </Button>
+                    <Typography mt={2} color="primary">
+                      {formatTime(countdown)}
+                    </Typography>
                   </Stack>
                 </Stack>
               </Stack>
