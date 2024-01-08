@@ -1,6 +1,7 @@
 html,
 body,
 #root {
+  height: 100%;
   /* font-size: 1rem; */
   font-size: 0.935rem;
   font-family: poppins;
@@ -16,9 +17,6 @@ body,
     top: 0;
     left: 0;
   }
-
 }
-
-
 
 @import "bootstrap/scss/bootstrap";

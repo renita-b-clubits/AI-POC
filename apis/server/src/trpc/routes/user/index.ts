@@ -8,6 +8,7 @@ import { otp } from "./otp";
 import { update } from "./update";
 import { get } from "./get";
 import { signInWithMobile } from "./sign-in-with-otp";
+import { signInWithTwilio } from "./twilio-otp";
 
 export const userRoutes = trpc.router({
   signIn,
@@ -19,4 +20,5 @@ export const userRoutes = trpc.router({
   update,
   get,
   signInWithMobile,
+  signInWithTwilio,
 });
