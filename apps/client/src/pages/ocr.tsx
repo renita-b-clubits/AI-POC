@@ -3,9 +3,22 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea, CardActions } from "@mui/material";
+import {
+  CardActionArea,
+  CardActions,
+  Paper,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Table,
+} from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { uploadFileToBlob } from "../utils/azure-blob-upload";
+import { client } from "../main";
+import { useAuthContext } from "../shared/hooks/use-auth";
 
 interface DataItem {
   Key: string;
@@ -18,6 +31,7 @@ export default function MultiActionAreaCard() {
     data: [],
   });
   const [loading, setLoading] = useState(false);
+  const auth = useAuthContext();
 
   const onFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -57,6 +71,20 @@ export default function MultiActionAreaCard() {
     });
     setLoading(false);
     setResponse(resp);
+
+    try {
+      const { sasToken } = await client.sasToken.read.mutate();
+      const imageUrl = await uploadFileToBlob(file, sasToken);
+      const save_response = await client.ocr.upload.mutate({
+        extractedData: JSON.stringify(resp),
+        uploadedData: imageUrl,
+        type: key,
+        userID: auth.state.user.id,
+      });
+      console.log("save", save_response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -151,16 +179,46 @@ export default function MultiActionAreaCard() {
           )}
         </div>
         <div>
-          <ul>
-            {!loading
-              ? res.data.map((item: DataItem, index: number) => (
-                  <li key={index}>
-                    <strong>{item.Key}:</strong> {item.Value}
-                  </li>
-                ))
-              : "Loading...."}
-          </ul>
+          <ul>{!loading ? res.data?.length > 0 : "Loading...."}</ul>
         </div>
+      </div>
+      <div>
+        {res.data?.length > 0 && (
+          <div>
+            <h2> Details:</h2>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <strong>Key</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Value</strong>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {res.data.map((item: DataItem, index) => (
+                    <TableRow
+                      key={item.Key}
+                      style={{
+                        backgroundColor:
+                          index % 2 === 0 ? "#ffffff" : "#f0f0f0",
+                        height: "-10px",
+                      }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {item.Key}
+                      </TableCell>
+                      <TableCell>{item.Value}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -231,11 +231,29 @@ Table User {
   updatedById Int
   createdBy User
   updatedBy User
+  ocrUserDetails Ocr [not null]
+  ocrCreated Ocr [not null]
+  ocrUpdated Ocr [not null]
 
   indexes {
     (username, mobile) [unique]
     (username, email) [unique]
   }
+}
+
+Table Ocr {
+  id Int [pk, increment]
+  userId Int [not null]
+  type String [not null]
+  extractedData String [not null]
+  uploadedData String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  createdById Int
+  updatedById Int
+  createdBy User
+  updatedBy User
+  user User [not null]
 }
 
 Ref: DemoPatient.genderId > Gender.id
@@ -247,3 +265,9 @@ Ref: User.statusId > UserStatus.id
 Ref: User.createdById > User.id
 
 Ref: User.updatedById > User.id
+
+Ref: Ocr.createdById > User.id [delete: No Action]
+
+Ref: Ocr.updatedById > User.id [delete: No Action]
+
+Ref: Ocr.userId > User.id [delete: No Action]
