@@ -5,3 +5,4 @@ export * from './DataSchema';
 export * from './RoleSchema';
 export * from './UserStatusSchema';
 export * from './UserSchema';
+export * from './OcrSchema';
