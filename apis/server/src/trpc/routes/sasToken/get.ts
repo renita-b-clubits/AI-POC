@@ -43,6 +43,9 @@ export const read = protectedProcedure.mutation(async () => {
   } catch (error) {
     console.log(getErrorMessage(error));
 
-    throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: getErrorMessage(error),
+    });
   }
 });
