@@ -7,8 +7,8 @@ export const PageTitle = () => {
   return (
     <Container
       fluid
-      className="px-4 py-2 bg-body-secondary overflow-x-scroll d-flex align-items-center"
-      style={{ minHeight: "3rem", maxHeight: "3rem" }}
+      className="  d-flex align-items-center"
+      // style={{ minHeight: "3rem", maxHeight: "3rem" }}
     >
       <Breadcrumb className={`flex-nowrap ${styles["page-title"]} `}>
         <Routes>

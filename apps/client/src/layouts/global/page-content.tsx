@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 export const PageContent = () => {
   return (
-    <Container fluid className="h-100 p-3 overflow-y-scroll">
+    <Container fluid className="h-100 p-1 overflow-y-scroll">
       <Outlet />
     </Container>
   );
