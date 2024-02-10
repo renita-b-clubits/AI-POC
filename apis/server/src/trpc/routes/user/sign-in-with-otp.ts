@@ -7,6 +7,7 @@ import { publicProcedure } from "../../trpc";
 // import { SNSClient } from "@aws-sdk/client-sns";
 // import { PublishCommand } from "@aws-sdk/client-sns";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import envVariables from "../../../environment/variables";
 
 export type User = RouterOutput["user"]["signIn"]["user"];
 
@@ -108,8 +109,8 @@ export const signInWithMobile = publicProcedure
         // const snsClient = new SNSClient({
         //   region: "us-east-1",
         //   credentials: {
-        //     accessKeyId: "AKIAQEG3VIRR57XYNI46",
-        //     secretAccessKey: "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",
+        //     accessKeyId: envVariables.SNS_ACCESS_ID,
+        //     secretAccessKey: envVariables.SNS_SECRET_KEY,
         //   },
         // });
 
@@ -195,8 +196,8 @@ export const signInWithMobile = publicProcedure
         const sesClient = new SESClient({
           region: "us-east-1",
           credentials: {
-            accessKeyId: "AKIAQEG3VIRRXBNXX34K",
-            secretAccessKey: "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",
+            accessKeyId: envVariables.SES_ACCESS_ID,
+            secretAccessKey: envVariables.SES_SECRET_KEY,
           },
         });
 
