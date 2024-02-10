@@ -27,6 +27,11 @@ export const envVariables = z.object({
   AZURE_COMPUTER_VISION_API_KEY: z.string(),
   // FACEBOOK_CLIENT_ID: z.string(),
   // FACEBOOK_SECRET_ID: z.string(),
+  SES_ACCESS_ID: z.string(),
+  SES_SECRET_KEY: z.string(),
+
+  SNS_ACCESS_ID: z.string(),
+  SNS_SECRET_KEY: z.string(),
 });
 
 declare global {
