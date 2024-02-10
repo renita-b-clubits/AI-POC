@@ -6,6 +6,7 @@ import { RouterOutput } from "../../router";
 import { publicProcedure } from "../../trpc";
 // import { SNSClient } from "@aws-sdk/client-sns";
 // import { PublishCommand } from "@aws-sdk/client-sns";
+import envVariables from "../../../environment/variables";
 
 export type User = RouterOutput["user"]["signIn"]["user"];
 
@@ -103,8 +104,8 @@ export const signInWithMobile = publicProcedure
       // const snsClient = new SNSClient({
       //   region: "us-east-1",
       //   credentials: {
-      //     accessKeyId: "AKIAQEG3VIRR57XYNI46",
-      //     secretAccessKey: "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",
+      //     accessKeyId: envVariables.SNS_ACCESS_ID,
+      //     secretAccessKey: envVariables.SNS_SECRET_KEY,
       //   },
       // });
 
