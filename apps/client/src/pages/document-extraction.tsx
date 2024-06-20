@@ -5,28 +5,12 @@ import { client } from "../main";
 import { handleTRPCError } from "../utils/handle-trpc-error";
 import { useAuthContext } from "../shared/hooks/use-auth";
 import { toast } from "react-toastify";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 
 const DocumentExtraction: React.FC = () => {
   const auth = useAuthContext();
 
-  const [extractionInProgress, setExtractionInProgress] = React.useState(false);
+  const [error] = useState<string | null>(null);
 
-  const [extractedDetailsData, setExtractedDetailsData] = useState<{
-    [key: string]: string;
-  } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [uploadLabel, setUploadLabel] = React.useState(
-    "Choose Image / File to Upload"
-  );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const onOCRFileChange = async (
@@ -37,10 +21,9 @@ const DocumentExtraction: React.FC = () => {
     const [file] = event.target.files;
 
     if (!file) return;
-    setExtractionInProgress(true);
 
-    const imageUrl = URL.createObjectURL(file);
-    setSelectedImage(imageUrl);
+    // const imageUrl = URL.createObjectURL(file);
+    // setSelectedImage(imageUrl);
 
     await OCR(file);
   };
@@ -49,27 +32,11 @@ const DocumentExtraction: React.FC = () => {
     try {
       const { sasToken } = await client.sasToken.read.mutate();
       const imageUrl = await uploadFileToBlob(file, sasToken);
-      const ocrResult = await client.ocr.get.mutate(imageUrl);
-
-      const extractedDetails = ocrResult.extractedDetails;
-
-      console.log("Backend Extracted Details:", extractedDetails);
-
-      // Convert the array of ExtractedDetails to a key-value pair where keys are indices
-      const indexedDetails: { [key: string]: string } = {};
-      extractedDetails.forEach((detail, index) => {
-        indexedDetails[index.toString()] = detail.text;
-      });
-
-      setExtractedDetailsData(indexedDetails);
-      setError(null);
-      setUploadLabel("Extraction Completed");
+      setSelectedImage(imageUrl);
     } catch (error) {
       console.error("Error during OCR:", error);
       toast.error("An error occurred.");
       handleTRPCError(error, auth);
-    } finally {
-      setExtractionInProgress(false);
     }
   };
 
@@ -87,7 +54,7 @@ const DocumentExtraction: React.FC = () => {
           className="form-control"
           htmlFor="ocrImageFile"
         >
-          {extractionInProgress ? "Extraction in Progress..." : uploadLabel}
+          {selectedImage ? "Image Uploaded!" : "Choose Image / File to Upload"}
           {selectedImage && (
             <img
               src={selectedImage}
@@ -110,51 +77,7 @@ const DocumentExtraction: React.FC = () => {
           id="ocrImageFile"
           onChange={onOCRFileChange}
         />
-
-        {/* {selectedImage && (
-          <img
-            src={selectedImage}
-            alt="Selected"
-            style={{ maxWidth: "100%" }}
-          />
-        )} */}
-
         {error && <div style={{ color: "red" }}>{error}</div>}
-
-        {extractedDetailsData && (
-          <div>
-            <h2>Extracted Details:</h2>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Key</TableCell>
-                    <TableCell>Value</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {Object.entries(extractedDetailsData).map(
-                    ([key, value], index) => (
-                      <TableRow
-                        key={key}
-                        style={{
-                          backgroundColor:
-                            index % 2 === 0 ? "#ffffff" : "#f0f0f0",
-                          height: "-10px",
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {key}
-                        </TableCell>
-                        <TableCell>{value}</TableCell>
-                      </TableRow>
-                    )
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        )}
       </div>
     </>
   );

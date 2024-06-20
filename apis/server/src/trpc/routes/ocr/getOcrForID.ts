@@ -16,7 +16,7 @@ export const getOcrForID = protectedProcedure
       let finalist: any = [];
       const data = await prisma.ocr.findMany({
         select: {
-          extractedData: true,
+          // extractedData: true,
           uploadedData: true,
           id: true,
           userId: true,
@@ -29,9 +29,9 @@ export const getOcrForID = protectedProcedure
       });
       if (data.length) {
         data.map((e) => {
-          const jsonData = JSON.parse(e.extractedData);
+          // const jsonData = JSON.parse(e.extractedData);
           let temp: any = {
-            extractedData: jsonData,
+            // extractedData: jsonData,
             image: e.uploadedData,
             name: "",
             passportno: "",
@@ -42,86 +42,86 @@ export const getOcrForID = protectedProcedure
             gender: "",
             mobile: "",
           };
-          if (jsonData.length) {
-            jsonData.forEach((element: any) => {
-              if (e.type === "passport") {
-                if (
-                  element.Key.toLowerCase().replace(/ /g, "").includes("name")
-                ) {
-                  temp.name = element.Value;
-                }
+          // if (jsonData.length) {
+          //   jsonData.forEach((element: any) => {
+          //     if (e.type === "passport") {
+          //       if (
+          //         element.Key.toLowerCase().replace(/ /g, "").includes("name")
+          //       ) {
+          //         temp.name = element.Value;
+          //       }
 
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("passportno")
-                ) {
-                  temp.passportno = element.Value;
-                }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("passportno")
+          //       ) {
+          //         temp.passportno = element.Value;
+          //       }
 
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("nationality")
-                ) {
-                  temp.nationality = element.Value;
-                }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("nationality")
+          //       ) {
+          //         temp.nationality = element.Value;
+          //       }
 
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("dateofissue")
-                ) {
-                  temp.issuedate = element.Value;
-                }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("dateofissue")
+          //       ) {
+          //         temp.issuedate = element.Value;
+          //       }
 
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("dateofexpiry")
-                ) {
-                  temp.expirydate = element.Value;
-                }
-              } else {
-                if (
-                  element.Key.toLowerCase().replace(/ /g, "").includes("name")
-                ) {
-                  temp.name = element.Value;
-                }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("dateofexpiry")
+          //       ) {
+          //         temp.expirydate = element.Value;
+          //       }
+          //     } else {
+          //       if (
+          //         element.Key.toLowerCase().replace(/ /g, "").includes("name")
+          //       ) {
+          //         temp.name = element.Value;
+          //       }
 
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("birth") ||
-                  element.Key.toLowerCase().replace(/ /g, "").includes("dob")
-                ) {
-                  temp.dob = element.Value;
-                }
-                if (
-                  element.Key.toLowerCase().replace(/ /g, "").includes("sex") ||
-                  element.Key.toLowerCase().replace(/ /g, "").includes("gender")
-                ) {
-                  temp.gender = element.Value;
-                }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("birth") ||
+          //         element.Key.toLowerCase().replace(/ /g, "").includes("dob")
+          //       ) {
+          //         temp.dob = element.Value;
+          //       }
+          //       if (
+          //         element.Key.toLowerCase().replace(/ /g, "").includes("sex") ||
+          //         element.Key.toLowerCase().replace(/ /g, "").includes("gender")
+          //       ) {
+          //         temp.gender = element.Value;
+          //       }
 
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("contact") ||
-                  element.Key.toLowerCase().replace(/ /g, "").includes("mobile")
-                ) {
-                  temp.mobile = element.Value;
-                }
-                if (
-                  element.Key.toLowerCase()
-                    .replace(/ /g, "")
-                    .includes("nationality")
-                ) {
-                  temp.nationality = element.Value;
-                }
-              }
-            });
-          }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("contact") ||
+          //         element.Key.toLowerCase().replace(/ /g, "").includes("mobile")
+          //       ) {
+          //         temp.mobile = element.Value;
+          //       }
+          //       if (
+          //         element.Key.toLowerCase()
+          //           .replace(/ /g, "")
+          //           .includes("nationality")
+          //       ) {
+          //         temp.nationality = element.Value;
+          //       }
+          //     }
+          //   });
+          // }
           finalist.push(temp);
         });
       }

@@ -188,7 +188,7 @@ function CommonTable(props: { rows: [] }) {
 }
 
 export default function ViewDetails() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const auth = useAuthContext();
   const [data, setData] = useState<[]>([]);
   const [category, setCategory] = useState("passport");
@@ -196,13 +196,13 @@ export default function ViewDetails() {
 
   useEffect(() => {
     async function fetchData() {
-      setLoading(true);
+      // setLoading(true);
       const response = await client.ocr.getOcrForID.mutate({
         userID: auth.state.user.id,
         type: category,
       });
       setData(response);
-      setLoading(false);
+      // setLoading(false);
     }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -231,9 +231,10 @@ export default function ViewDetails() {
         </Box>
       </div>
       <div style={{ marginTop: "2rem" }}>
-        {loading ? (
+        {/* {loading ? (
           "Loading...."
-        ) : (
+        ) : ( */}
+        {
           <>
             {category === "passport" ? (
               <PassportTable rows={data} />
@@ -241,7 +242,7 @@ export default function ViewDetails() {
               <CommonTable rows={data} />
             )}
           </>
-        )}
+        }
       </div>
     </div>
   );
