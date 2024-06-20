@@ -61,7 +61,10 @@ export default fastifyPlugin<FastifyJWTOptions>(
     });
 
     fastify.decorateRequest("authenticate", async (req: FastifyRequest) => {
+      console.log("[checking here].....................");
       await req.jwtVerify();
+      console.log("[checking here 2].....................");
+
       await req.jwtVerify({ onlyCookie: true });
     });
   }

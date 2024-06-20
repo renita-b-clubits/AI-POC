@@ -54,7 +54,10 @@ export const getOcrForID = protectedProcedure
                 if (
                   element.Key.toLowerCase()
                     .replace(/ /g, "")
-                    .includes("passportno")
+                    .includes("passportno") ||
+                  element.Key.toLowerCase()
+                    .replace(/ /g, "")
+                    .includes("passportnumber")
                 ) {
                   temp.passportno = element.Value;
                 }

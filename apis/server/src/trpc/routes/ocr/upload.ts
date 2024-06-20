@@ -10,6 +10,7 @@ export const upload = protectedProcedure
       uploadedData: z.string(),
       type: z.string(),
       userID: z.number(),
+      id: z.string().optional(),
     })
   )
   .mutation(async ({ ctx, input }) => {
@@ -22,12 +23,24 @@ export const upload = protectedProcedure
           userId: input.userID,
           createdById: input.userID,
           updatedById: input.userID,
+          qrId: input.id || null,
         },
         select: {
           extractedData: true,
           uploadedData: true,
         },
       });
+      if (input.id) {
+        await prisma.qrOcr.update({
+          data: {
+            isUploaded: true,
+          },
+          where: {
+            qrId: input.id,
+            userId: input.userID,
+          },
+        });
+      }
       return user;
     } catch (error) {
       throw new TRPCError({

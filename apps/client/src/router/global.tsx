@@ -10,6 +10,9 @@ import LazyProtectedLanguagePageWithFallback from "./lazy/protected/language";
 import LazyProtectedVoicePageWithFallback from "./lazy/protected/voice";
 import LazyProtectedOCRPageWithFallback from "./lazy/protected/ocr";
 import LazyLoginOtpPageWithFallback from "./lazy/login-otp";
+import React from "react";
+
+const ScanUploadPage = React.lazy(() => import("../../src/pages/ocr-scan"));
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +22,11 @@ export const router = createBrowserRouter([
   {
     path: "otp-login",
     element: <LazyLoginOtpPageWithFallback />,
+  },
+
+  {
+    path: "scan-upload",
+    element: <ScanUploadPage />,
   },
 
   {
