@@ -41,7 +41,7 @@ export const read = protectedProcedure.mutation(async () => {
 
     return { sasToken };
   } catch (error) {
-    console.log(getErrorMessage(error));
+    console.log("[ERROR]", error);
 
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",

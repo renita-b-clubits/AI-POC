@@ -14,6 +14,7 @@ export const OcrSchema = z.object({
   updatedAt: z.coerce.date(),
   createdById: z.number().int().nullable(),
   updatedById: z.number().int().nullable(),
+  qrId: z.string().nullable(),
 })
 
 export type Ocr = z.infer<typeof OcrSchema>

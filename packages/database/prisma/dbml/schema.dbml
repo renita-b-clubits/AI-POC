@@ -234,6 +234,7 @@ Table User {
   ocrUserDetails Ocr [not null]
   ocrCreated Ocr [not null]
   ocrUpdated Ocr [not null]
+  ocrIdUserDetails qrOcr [not null]
 
   indexes {
     (username, mobile) [unique]
@@ -251,8 +252,20 @@ Table Ocr {
   updatedAt DateTime [not null]
   createdById Int
   updatedById Int
+  qrId String
   createdBy User
   updatedBy User
+  user User [not null]
+}
+
+Table qrOcr {
+  id Int [pk, increment]
+  userId Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  qrId String [unique, not null]
+  isUploaded Boolean [not null]
+  expiryAt DateTime [not null]
   user User [not null]
 }
 
@@ -271,3 +284,5 @@ Ref: Ocr.createdById > User.id [delete: No Action]
 Ref: Ocr.updatedById > User.id [delete: No Action]
 
 Ref: Ocr.userId > User.id [delete: No Action]
+
+Ref: qrOcr.userId > User.id

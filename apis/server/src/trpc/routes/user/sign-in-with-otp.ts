@@ -4,8 +4,8 @@ import { z } from "zod";
 import { prisma } from "../../../db/prisma";
 import { RouterOutput } from "../../router";
 import { publicProcedure } from "../../trpc";
-// import { SNSClient } from "@aws-sdk/client-sns";
-// import { PublishCommand } from "@aws-sdk/client-sns";
+import { SNSClient } from "@aws-sdk/client-sns";
+import { PublishCommand } from "@aws-sdk/client-sns";
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import envVariables from "../../../environment/variables";
 
@@ -106,22 +106,22 @@ export const signInWithMobile = publicProcedure
 
         console.log("userDetails:", user_details);
         //sending msg through AWS
-        // const snsClient = new SNSClient({
-        //   region: "us-east-1",
-        //   credentials: {
-        //     accessKeyId: envVariables.SNS_ACCESS_ID,
-        //     secretAccessKey: envVariables.SNS_SECRET_KEY,
-        //   },
-        // });
+        const snsClient = new SNSClient({
+          region: "us-east-1",
+          credentials: {
+            accessKeyId: envVariables.SNS_ACCESS_ID,
+            secretAccessKey: envVariables.SNS_SECRET_KEY,
+          },
+        });
 
-        // const params = {
-        //   Message: `Welcome! your mobile verification code is: ${otp}`,
-        //   PhoneNumber: user.mobile ?? undefined,
-        // };
+        const params = {
+          Message: `Welcome! your mobile verification code is: ${otp}`,
+          PhoneNumber: user.mobile ?? undefined,
+        };
 
-        // const result = await snsClient.send(new PublishCommand(params));
+        const result = await snsClient.send(new PublishCommand(params));
 
-        // console.log("result is: ", result);
+        console.log("result is: ", result);
 
         return { user_details };
       } else if (emailPattern.test(input.username)) {

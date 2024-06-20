@@ -4,7 +4,7 @@ import { z } from "zod";
 import { prisma } from "../../../db/prisma";
 import { RouterOutput } from "../../router";
 import { publicProcedure } from "../../trpc";
-// import { sendEmail, senderAddress } from "../../../utils/send-email";
+import { sendEmail, senderAddress } from "../../../utils/send-email";
 import env from "../../../environment/variables";
 
 export type User = RouterOutput["user"]["signIn"]["user"];
@@ -109,28 +109,28 @@ export const signIn = publicProcedure
         delete (user as Partial<typeof user>).password;
 
         // Step 5: Send Email with OTP
-        // await sendEmail({
-        //   senderAddress,
-        //   content: {
-        //     subject: "Welcome to Maintenance System Login",
-        //     html: `<html><head><style>
-        //   // ... your email HTML ...
-        //   </style></head><body><p> Following are the Login Otp  for your maintenance Login Page:</p>
+        await sendEmail({
+          senderAddress,
+          content: {
+            subject: "Welcome to Maintenance System Login",
+            html: `<html><head><style>
+          // ... your email HTML ...
+          </style></head><body><p> Following are the Login Otp  for your maintenance Login Page:</p>
 
-        //   ${otp} And Your Expiry Time is ${otpExpiry}
+          ${otp} And Your Expiry Time is ${otpExpiry}
 
-        //   <p>Regards,<br>cluBITS</p>
-        //   </body></html>`,
-        //   },
-        //   recipients: {
-        //     to: [
-        //       {
-        //         address: `<${user.email}>`,
-        //         displayName: `${user.name}`,
-        //       },
-        //     ],
-        //   },
-        // });
+          <p>Regards,<br>cluBITS</p>
+          </body></html>`,
+          },
+          recipients: {
+            to: [
+              {
+                address: `<${user.email}>`,
+                displayName: `${user.name}`,
+              },
+            ],
+          },
+        });
 
         return { user };
       } else {

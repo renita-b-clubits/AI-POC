@@ -269,11 +269,12 @@ model User {
   createdById Int?
   updatedById Int?
 
-  createdBy      User? @relation("UserCreatedByUser", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  updatedBy      User? @relation("UserUpdatedByUser", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  ocrUserDetails Ocr[] @relation("ocrUserDetails")
-  ocrCreated     Ocr[] @relation("ocrCreatedByUser")
-  ocrUpdated     Ocr[] @relation("ocrUpdatedByUser")
+  createdBy        User?   @relation("UserCreatedByUser", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  updatedBy        User?   @relation("UserUpdatedByUser", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  ocrUserDetails   Ocr[]   @relation("ocrUserDetails")
+  ocrCreated       Ocr[]   @relation("ocrCreatedByUser")
+  ocrUpdated       Ocr[]   @relation("ocrUpdatedByUser")
+  ocrIdUserDetails qrOcr[] @relation("ocrIdUserDetails")
 
   @@unique([username, mobile])
   @@unique([username, email])
@@ -290,9 +291,22 @@ model Ocr {
   updatedAt   DateTime @updatedAt
   createdById Int?
   updatedById Int?
+  qrId        String?
   createdBy   User?    @relation("ocrCreatedByUser", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   updatedBy User? @relation("ocrUpdatedByUser", fields: [updatedById], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   user User @relation("ocrUserDetails", fields: [userId], references: [id], onUpdate: NoAction)
+}
+
+model qrOcr {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  qrId       String   @unique
+  isUploaded Boolean
+  expiryAt   DateTime
+
+  user User @relation("ocrIdUserDetails", fields: [userId], references: [id], onUpdate: NoAction)
 }

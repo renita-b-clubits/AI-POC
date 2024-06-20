@@ -93,9 +93,7 @@ export const PageTitle = () => {
                     color="secondary"
                     href="/"
                     className="text-decoration-none"
-                  >
-                    <h5 className="mb-0">Anomaly Detection</h5>
-                  </Link>
+                  ></Link>
                 </BreadcrumbItem>
                 <Outlet />
               </>
