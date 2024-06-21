@@ -89,7 +89,7 @@ export const LoginPage = () => {
 
         auth.dispatcher({ type: "set-user", payload: user });
 
-        navigate("/");
+        navigate("/ocr");
       } else {
         toast("Successfully Otp send The Register Email");
 
