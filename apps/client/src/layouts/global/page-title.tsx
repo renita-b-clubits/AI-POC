@@ -21,9 +21,7 @@ export const PageTitle = () => {
                     color="secondary"
                     href="/"
                     className="text-decoration-none"
-                  >
-                    <h5 className="mb-0">Home</h5>
-                  </Link>
+                  ></Link>
                 </BreadcrumbItem>
                 <Outlet />
               </>

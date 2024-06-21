@@ -37,6 +37,7 @@ export default function MultiActionAreaCard() {
       style={{
         alignItems: "center",
         height: "100vh",
+        marginTop: "5rem",
       }}
     >
       <Box sx={{ width: "100%", typography: "body1", textAlign: "center" }}>
