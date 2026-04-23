@@ -56,7 +56,7 @@
     "server": "workspace:*",
     "sort-by": "^1.2.0",
     "superjson": "^1.13.1",
-    "uuid": "3.4.0",
+    "uuid": "14.0.0",
     "uuidv4": "^6.2.13",
     "zod": "^3.22.4"
   },
